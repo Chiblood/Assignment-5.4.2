@@ -22,7 +22,7 @@ public class Program
 
         int[,] matrix = new int[size, size];
 
-        Console.WriteLine("Input elements in the first matrix:");
+        Console.WriteLine("Input elements in the matrix:");
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -35,13 +35,62 @@ public class Program
         Console.WriteLine("The matrix is:");
         PrintMatrix(matrix);
 
-        int rightDiagonalSum = 0;
+        double rightDiagonalSum = AddRightDiagonal(matrix);
+        Console.WriteLine($"Addition of the right Diagonal elements is: {rightDiagonalSum}");
+
+        double leftDiagonalSum = AddLeftDiagonal(matrix);
+        Console.WriteLine($"Addition of the left Diagonal elements is: {leftDiagonalSum}");
+
+    }
+    
+    private static int[] TakeUserArray() // Prompts the user to enter a series of integers separated by spaces, parses them, and returns the resulting array.
+    {
+        Console.Write("Enter integers separated by space: ");
+        string? input = Console.ReadLine();
+        if (input != null)
+        {
+            string[] parts = input.Split(' ');
+            int[] nums = new int[parts.Length];
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (int.TryParse(parts[i].Trim(), out int num))
+                {
+                    nums[i] = num;
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid integer: {parts[i]}");
+                    return new int[0]; // Return an empty array for invalid input
+                }
+            }
+            Console.WriteLine($"You entered: [{string.Join(", ", nums)}]");
+            return nums; // Return the parsed array
+        }
+        else
+        {
+            Console.WriteLine("No input provided.");
+            return new int[0]; // Return an empty array if no input is provided
+        }
+    }
+    private static double AddRightDiagonal(int[,] matrix)
+    {
+        int size = matrix.GetLength(0);
+        double sum = 0;
         for (int i = 0; i < size; i++)
         {
-            rightDiagonalSum += matrix[i, size - 1 - i];
+            sum += matrix[i, size - 1 - i];
         }
-
-        Console.WriteLine($"Addition of the right Diagonal elements is: {rightDiagonalSum}");
+        return sum;
+    }
+    private static double AddLeftDiagonal(int[,] matrix)
+    {
+        int size = matrix.GetLength(0);
+        double sum = 0;
+        for (int i = 0; i < size; i++)
+        {
+            sum += matrix[i, i];
+        }
+        return sum;
     }
     private static void PrintMatrix(int[,] matrix) // print matrix with automatic width formatting
     {
